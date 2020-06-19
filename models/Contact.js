@@ -2,20 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ContactSchema = new Schema({
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
     name: {
         type: String,
         required: true
     },
     email: {
         type: String,
-        required: true,
-        index: {
-            unique: true
-        }
     },
-    password: {
+    type: {
         type: String,
-        required: true
+        default: 'personal'
     },
     date: {
         type: Date,
