@@ -13,7 +13,7 @@ export default (state, action) => {
         case UPDATE_CONTACT:
             return {
                 ...state,
-                contacts: state.contacts.map(contact => contact.id === payload.id ? payload : contact)
+                contacts: state.filtered.map(contact => contact.id === payload.id ? payload : contact)
             };
 
         case DELETE_CONTACT:
