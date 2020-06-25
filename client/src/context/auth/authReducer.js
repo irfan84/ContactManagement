@@ -7,7 +7,8 @@ import {
     AUTH_ERROR,
     CLEAR_ERRORS,
     LOGOUT
-} from "../../context/types"
+} from "../../context/types";
+
 export default (state, action) => {
     const {type, payload} = action;
     switch (type) {
@@ -41,6 +42,7 @@ export default (state, action) => {
                 user:null,
                 isAuthenticated: false,
                 loading: false,
+                error: payload
             };
 
             case CLEAR_ERRORS:

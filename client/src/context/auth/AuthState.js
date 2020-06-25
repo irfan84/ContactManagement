@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR, CLEAR_ERRORS, LOGOUT } from "../../context/types";
+import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR, CLEAR_ERRORS, LOGOUT } from "../types";
 import axios from 'axios';
 import setAuthToken from "../../utils/setAuthToken";
 import AuthContext from "./authContext";
@@ -8,7 +8,7 @@ import authReducer from "./authReducer";
 const AuthState = props => {
     const initialState = {
         token: localStorage.getItem('token'),
-        isAuthenticated: null,
+        isAuthenticated: false,
         loading: true,
         user: null,
         error: null
