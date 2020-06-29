@@ -14,6 +14,9 @@ const ContactSchema = new Schema({
     email: {
         type: String,
     },
+    phone: {
+        type: String,
+    },
     type: {
         type: String,
         default: 'personal'

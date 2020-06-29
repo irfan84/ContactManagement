@@ -12,17 +12,15 @@ const ContactForm = () => {
         }
         else {
             setContact({
-                id: '',
                 name: '',
                 email: '',
                 phone: '',
                 type: 'personal'
             });
         }
-    }, [contactContext, current]);
+    }, [current]);
 
     const [contact, setContact] = useState({
-        id: '',
         name: '',
         email: '',
         phone: '',

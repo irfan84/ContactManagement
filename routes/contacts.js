@@ -11,7 +11,7 @@ const Contact = require('../models/Contact');
 
 router.get('/', auth, async (req, res) => {
     try {
-        contacts = await Contact.find({ user:req.user.id }).sort({date: -1});
+        const contacts = await Contact.find({ user:req.user.id }).sort({date: -1});
         return res.status(200).json(contacts);
     } catch (err) {
         console.log(err.message);
@@ -65,7 +65,7 @@ router.put('/:id', [auth, check('name', 'Name is required').not().isEmpty()], as
     if(phone) contactFields.phone = phone;
     if(type) contactFields.type = type;
     try {
-        let contact = await Contact.findById(req.params.id)
+        let contact = await Contact.findById(req.params.id);
         if(!contact){
             return res.status(400).json({msg: 'Contact not found'});
         }
@@ -73,7 +73,7 @@ router.put('/:id', [auth, check('name', 'Name is required').not().isEmpty()], as
         if(contact.user.toString() !== req.user.id){
             return res.status(401).json({msg: 'Not authorized'});
         }
-        contact = await Contact.findOneAndUpdate(req.params.id,
+        contact = await Contact.findByIdAndUpdate(req.params.id,
             {$set: contactFields},
             {new: true});
         return res.status(201).json(contact);

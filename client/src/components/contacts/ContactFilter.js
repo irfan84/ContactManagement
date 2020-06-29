@@ -1,44 +1,33 @@
-import React, {useContext, useState, useEffect} from 'react';
-import ContactContext from '../../context/contact/contactContext'
-
+import React, { useContext, useRef } from 'react';
+import ContactContext from '../../context/contact/contactContext';
 
 const ContactFilter = () => {
     const contactContext = useContext(ContactContext);
-    const { filtered, filterContacts, clearFilter } = contactContext;
+    const text = useRef('');
 
-    const [formData, setFormData] = useState({
-        text: ''
-    });
-
-    const { text } = formData;
-
-    useEffect(() => {
-        if(filtered === null){
-            setFormData({
-                text:''
-            })
-        }
-    }, [filtered]);
+    const { filterContacts, getContacts, setField, clearField } = contactContext;
 
     const onChange = e => {
-        setFormData({
-            ...formData, [e.target.name]: e.target.value
-        });
-        if(text !== null){
-            filterContacts(text);
-        }
-        else{
-            clearFilter();
+        if (text.current.value !== '') {
+            filterContacts(e.target.value);
+            setField(e.target.value);
+
+        } else {
+            getContacts();
+            clearField();
         }
     };
 
     return (
-        <div>
         <form>
-            <input type="text" name="text" placeholder="Filter Contacts..." onChange={onChange} />
+            <input
+                ref={text}
+                type='text'
+                placeholder='Filter Contacts...'
+                onChange={onChange}
+            />
         </form>
-        </div>
-     )
+    );
 };
 
 export default ContactFilter;

@@ -13,11 +13,12 @@ const Login = props =>{
         if(isAuthenticated){
             props.history.push('/');
         }
-        if(error === 'Invalid credentials'){
+        if(error){
             setAlert(error, 'danger');
             clearErrors();
         }
-    }, [error, isAuthenticated, props.history]);
+        // eslint-disable-next-line
+    }, [error, isAuthenticated]);
 
     const [user, setUser] = useState({
         email: '',

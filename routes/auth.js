@@ -10,8 +10,15 @@ const { check, validationResult } = require('express-validator');
 // @route   GET api/auth
 // @access  Public
 
-router.get('/', async (req, res) => {
-    res.send('Get logged in user')
+router.get('/', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        res.status(200).json(user)
+    }
+    catch(err){
+        console.log(err.message)
+        res.status(500).send('Server error')
+    }
 });
 
 
@@ -35,13 +42,13 @@ router.post('/', [
         // Check if user exists
         let user = await User.findOne({ email });
         if(!user){
-            res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] })
+            res.status(400).json({ msg: 'Invalid credentials' })
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
 
         if(!isMatch){
-            res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] })
+            res.status(400).json({ msg: 'Invalid credentials' })
         }
 
         // Return jsonwebtoken
