@@ -1,6 +1,4 @@
 import React, { useReducer } from "react";
-import ContactContext from "./contactContext";
-import contactReducer from "./contactReducer";
 import {
     GET_CONTACTS,
     ADD_CONTACT,
@@ -12,9 +10,12 @@ import {
     CLEAR_CURRENT,
     FILTER_CONTACTS,
     CLEAR_FILTER,
-    CONTACT_ERROR
+    CONTACT_ERROR, CLEAR_ERRORS
 } from "../types";
 import axios from "axios";
+import ContactContext from "./contactContext";
+import contactReducer from "./contactReducer";
+
 
 const ContactState = props => {
     const initialState = {
@@ -61,7 +62,7 @@ const ContactState = props => {
         catch (err) {
             dispatch({
                 type: CONTACT_ERROR,
-                payload: err.response.data.msg
+                payload: err.response.data.errors
             });
         }
 
@@ -80,11 +81,12 @@ const ContactState = props => {
                 type: UPDATE_CONTACT,
                 payload: res.data
             });
+            clearCurrent();
         }
         catch (err) {
             dispatch({
                 type: CONTACT_ERROR,
-                payload: err.response.data.msg
+                payload: err.response.data.errors
             });
         }
     };
@@ -101,7 +103,7 @@ const ContactState = props => {
             catch (err) {
                 dispatch({
                     type: CONTACT_ERROR,
-                    payload: err.response.data.msg
+                    payload: err.response.data.errors
                 });
             }
 
@@ -137,6 +139,9 @@ const ContactState = props => {
         dispatch({ type: CLEAR_FILTER });
     };
 
+    // Clear Errors
+    const clearErrors = () => dispatch({type: CLEAR_ERRORS});
+
     return (
         <ContactContext.Provider
         value={{contacts: state.contacts,
@@ -153,7 +158,8 @@ const ContactState = props => {
                 clearField,
                 clearCurrent,
                 filterContacts,
-                clearFilter}}>
+                clearFilter,
+                clearErrors}}>
             { props.children }
         </ContactContext.Provider>
     )

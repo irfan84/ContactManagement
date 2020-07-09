@@ -1,14 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react';
 import ContactContext from '../../context/contact/contactContext';
+import AlertContext from '../../context/alert/alertContext';
 
 
 const ContactForm = () => {
     const contactContext = useContext(ContactContext);
-    const { addContact, updateContact, clearCurrent, current } = contactContext;
+    const alertContext = useContext(AlertContext);
+
+    const { setAlert } = alertContext;
+    const { addContact, updateContact, clearCurrent, current, error, clearErrors, message } = contactContext;
 
     useEffect(() => {
-        if(current !== null){
-        setContact(current);
+    if(error) {
+            return error.forEach(error => setAlert(error.msg, 'danger'));
         }
         else {
             setContact({
@@ -17,8 +21,9 @@ const ContactForm = () => {
                 phone: '',
                 type: 'personal'
             });
-        }
-    }, [current]);
+    }
+        // eslint-disable-next-line
+    }, [error, current, message]);
 
     const [contact, setContact] = useState({
         name: '',
@@ -31,15 +36,15 @@ const ContactForm = () => {
 
     const onChange = e => setContact({...contact, [e.target.name]: e.target.value});
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault();
         if(current === null){
             addContact(contact);
         }
         else {
-            updateContact(contact);
+            await updateContact(contact);
         }
-        clearAll();
+        clearErrors();
     };
 
     const clearAll = e => {

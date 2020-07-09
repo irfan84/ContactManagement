@@ -7,7 +7,7 @@ import {
     SET_CURRENT,
     FILTER_CONTACTS,
     CONTACT_ERROR,
-    SET_FIELD, CLEAR_FIELD
+    SET_FIELD, CLEAR_FIELD, CLEAR_ERRORS
 } from "../types";
 
 export default (state, action) => {
@@ -71,7 +71,7 @@ export default (state, action) => {
             return {
                 ...state,
                 contacts: state.contacts.filter(contact => {
-                    const regex = new RegExp(`${payload}`, 'gi')
+                    const regex = new RegExp(`${payload}`, 'gi');
                     return contact.name.match(regex) || contact.email.match(regex);
                 })
             };
@@ -80,6 +80,12 @@ export default (state, action) => {
             return {
                 ...state,
                 error: payload
+            };
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
             };
 
         default:

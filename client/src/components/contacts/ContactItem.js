@@ -1,21 +1,26 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import ContactContext from '../../context/contact/contactContext';
+import AlertContext from "../../context/alert/alertContext";
 
 const ContactItem = ({ contact }) => {
 
     const contactContext = useContext(ContactContext);
-    const { deleteContact, setCurrent, clearCurrent } = contactContext;
+    const alertContext = useContext(AlertContext);
+
+    const { deleteContact, setCurrent, clearErrors } = contactContext;
+    const { setAlert } = alertContext;
 
     const { _id, name, phone, email, type } = contact;
 
     const onEdit = e => {
         setCurrent(contact);
+        clearErrors();
     };
 
     const onDelete = e => {
         deleteContact(_id);
-        clearCurrent();
+        setAlert("Contact deleted", 'danger');
     };
 
     return (

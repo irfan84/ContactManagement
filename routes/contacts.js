@@ -37,10 +37,9 @@ router.post('/', [auth, check('name', 'Name is required').not().isEmpty()], asyn
                 name, email, phone, type, user: req.user.id
             });
             const contact = await newContact.save();
-            return res.status(201).json(contact);
+            return res.status(200).json(contact);
         }
         catch (err) {
-            console.log(err.message);
             return res.status(500).send('Server error');
         }
 });
@@ -67,7 +66,7 @@ router.put('/:id', [auth, check('name', 'Name is required').not().isEmpty()], as
     try {
         let contact = await Contact.findById(req.params.id);
         if(!contact){
-            return res.status(400).json({msg: 'Contact not found'});
+            return res.status(400).json({errors: [{msg: 'Contact not found'}]});
         }
     // Make sure user owns contact
         if(contact.user.toString() !== req.user.id){
