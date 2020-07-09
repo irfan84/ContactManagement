@@ -8,7 +8,7 @@ const ContactForm = () => {
     const alertContext = useContext(AlertContext);
 
     const { setAlert } = alertContext;
-    const { addContact, updateContact, clearCurrent, current, error, clearErrors } = contactContext;
+    const { addContact, updateContact, clearCurrent, current, error, clearErrors, message } = contactContext;
 
     useEffect(() => {
     if(error) {
@@ -26,7 +26,7 @@ const ContactForm = () => {
             });
     }
         // eslint-disable-next-line
-    }, [error, current]);
+    }, [error, current, message]);
 
     const [contact, setContact] = useState({
         name: '',
